@@ -12,8 +12,9 @@ export const getPostComments = async (req, res) => {
 export const addComment = async (req, res) => {
   const clerkUserId = req.auth.userId;
   const postId = req.params.postId;
+
   if (!clerkUserId) {
-    return res.status(401).json("Not authenticated");
+    return res.status(401).json("Not authenticated!");
   }
 
   const user = await User.findOne({ clerkUserId });
@@ -25,20 +26,26 @@ export const addComment = async (req, res) => {
   });
   const savedComment = await newComment.save();
 
-  // TEMPORARY TIMEOUT FUNCTION
-  setTimeout(async () => {
-    res.status(201).json(savedComment); // 201 => CREATED
-  }, 3000);
+  res.status(201).json(savedComment);
 };
 
 export const deleteComment = async (req, res) => {
   const clerkUserId = req.auth.userId;
   // COMMENT ID
   const id = req.params.id;
+
   if (!clerkUserId) {
-    return res.status(401).json("Not authenticated");
+    return res.status(401).json("Not authenticated!");
   }
-  const user = await User.findOne({ clerkUserId });
+
+  const role = req.auth.sessionClaims?.metadata?.role || "user";
+
+  if (role === "admin") {
+    await Comment.findByIdAndDelete(req.params.id);
+    return res.status(200).json("Comment has been deleted");
+  }
+
+  const user = User.findOne({ clerkUserId });
 
   const deletedComment = await Comment.findOneAndDelete({
     _id: id,
@@ -49,7 +56,7 @@ export const deleteComment = async (req, res) => {
   // IF DOESN'T EXISTS THAT MEANS NOT THE USER'S COMMENT
   if (!deletedComment) {
     // 403 => FORBIDDEN
-    return res.status(403).json("You can delete only your comment");
+    return res.status(403).json("You can delete only your comment!");
   }
-  res.status(200).json("Comment has been deleted");
+  res.status(200).json("Comment deleted");
 };

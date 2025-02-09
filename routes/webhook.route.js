@@ -6,7 +6,8 @@ const router = express.Router();
 
 router.post(
   "/clerk",
-  bodyParser.raw({ type: "application/json" }),
+  bodyParser.raw({ type: "application/json" }), // Required for Clerk webhook verification
   clerkWebHook
 );
+
 export default router;

@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
 import { Schema } from "mongoose";
+import mongoose from "mongoose";
 
-const userSchema = new mongoose.Schema(
+const userSchema = new Schema(
   {
     clerkUserId: {
       type: String,
@@ -22,15 +22,11 @@ const userSchema = new mongoose.Schema(
       type: String,
     },
     savedPosts: {
-      // ARRAY SINCE WILL STORE THE POST IDS
       type: [String],
-      // WHEN CREATE <NEW></NEW> USER HAVE NO SAVED POSTS
       default: [],
     },
   },
-  // WHEN NEW USER CREATED AUTOMATICALLY CREATE AT AND UPDATE AT
   { timestamps: true }
 );
 
-// COLLECTION NAME: USERS
 export default mongoose.model("User", userSchema);

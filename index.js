@@ -7,16 +7,13 @@ import webhookRouter from "./routes/webhook.route.js";
 import { clerkMiddleware, requireAuth } from "@clerk/express";
 import cors from "cors";
 
+const PORT = process.env.PORT || 8000;
+
 const app = express();
 
 app.use(cors(process.env.CLIENT_URL));
 app.use(clerkMiddleware());
-
-// TO PREVENT CONFLICT WHILE USING EXPRESS JSON
 app.use("/webhooks", webhookRouter);
-const PORT = process.env.PORT || 8000;
-
-// MIDDLEWARE SINCE EXPRESS DOESN'T ALLOW JSON IN REQUEST BODY
 app.use(express.json());
 
 app.use(function (req, res, next) {
@@ -58,8 +55,9 @@ app.use("/comments", commentRouter);
  */
 app.use((error, req, res, next) => {
   res.status(error.status || 500);
+
   res.json({
-    message: error.message || "Something went wrong",
+    message: error.message || "Something went wrong!",
     status: error.status,
     stack: error.stack,
   });

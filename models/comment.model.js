@@ -1,7 +1,7 @@
-import mongoose from "mongoose";
 import { Schema } from "mongoose";
+import mongoose from "mongoose";
 
-const commentSchema = new mongoose.Schema(
+const commentSchema = new Schema(
   {
     user: {
       type: Schema.Types.ObjectId,
@@ -21,5 +21,4 @@ const commentSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// COLLECTION NAME: Comment
 export default mongoose.model("Comment", commentSchema);

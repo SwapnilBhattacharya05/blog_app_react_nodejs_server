@@ -1,9 +1,8 @@
-import mongoose from "mongoose";
 import { Schema } from "mongoose";
+import mongoose from "mongoose";
 
-const postSchema = new mongoose.Schema(
+const postSchema = new Schema(
   {
-    // CREATE NEW POST IT WILL ADD THE USER ID OF THAT USER
     user: {
       type: Schema.Types.ObjectId,
       ref: "User",
@@ -16,8 +15,6 @@ const postSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-
-    // EACH POST DIFFERENT SLUG
     slug: {
       type: String,
       required: true,
@@ -32,7 +29,7 @@ const postSchema = new mongoose.Schema(
     },
     content: {
       type: String,
-      unique: true,
+      required: true,
     },
     isFeatured: {
       type: Boolean,
@@ -46,5 +43,4 @@ const postSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-// COLLECTION NAME: Post
 export default mongoose.model("Post", postSchema);

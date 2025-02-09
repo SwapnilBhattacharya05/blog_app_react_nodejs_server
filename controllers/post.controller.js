@@ -73,7 +73,14 @@ export const createPost = async (req, res) => {
 export const deletePost = async (req, res) => {
   const clerkUserId = req.auth.userId;
   if (!clerkUserId) {
-    return res.status(401).json("Not authenticated");
+    return res.status(401).json("Not authenticated!");
+  }
+
+  const role = req.auth.sessionClaims?.metadata?.role || "user";
+
+  if (role == "admin") {
+    await Post.findByIdAndDelete(req.params.id);
+    return res.status(200).json("Post has been deleted");
   }
 
   const user = await User.findOne({ clerkUserId });
