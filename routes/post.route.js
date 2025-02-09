@@ -4,6 +4,7 @@ import {
   getPosts,
   createPost,
   deletePost,
+  uploadAuth,
 } from "../controllers/post.controller.js";
 
 const router = express.Router();
@@ -20,6 +21,8 @@ const router = express.Router();
  * DURING POST UPDATE OR DELETE WE HAVE TO VERIFY OUR USER FIRST
  * GET USER SESSION TOKKEN FROM CLIENT AND VERIFY TOKEN FROM SERVER
  */
+
+router.get("/upload-auth", uploadAuth); // MOVED TO TOP SINCE DYNAMIC SLUG CAN CAUSE CONFLICT
 router.get("/", getPosts);
 router.get("/:slug", getPost);
 router.post("/", createPost);

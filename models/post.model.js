@@ -26,6 +26,10 @@ const postSchema = new mongoose.Schema(
     desc: {
       type: String,
     },
+    category: {
+      type: String,
+      default: "general",
+    },
     content: {
       type: String,
       unique: true,

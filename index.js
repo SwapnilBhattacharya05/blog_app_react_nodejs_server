@@ -5,8 +5,11 @@ import commentRouter from "./routes/comment.route.js";
 import connectDB from "./lib/connectDB.js";
 import webhookRouter from "./routes/webhook.route.js";
 import { clerkMiddleware, requireAuth } from "@clerk/express";
+import cors from "cors";
 
 const app = express();
+
+app.use(cors(process.env.CLIENT_URL));
 app.use(clerkMiddleware());
 
 // TO PREVENT CONFLICT WHILE USING EXPRESS JSON
@@ -16,6 +19,14 @@ const PORT = process.env.PORT || 8000;
 // MIDDLEWARE SINCE EXPRESS DOESN'T ALLOW JSON IN REQUEST BODY
 app.use(express.json());
 
+app.use(function (req, res, next) {
+  res.header("Access-Control-Allow-Origin", "*");
+  res.header(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept"
+  );
+  next();
+});
 // !ENDPOINT FOR TEST PURPOSE
 // app.get("/auth-state", (req, res) => {
 //   const authState = req.auth;
