@@ -1,16 +1,11 @@
 import express from "express";
+import connectDB from "./lib/connectDB.js";
 import userRouter from "./routes/user.route.js";
 import postRouter from "./routes/post.route.js";
 import commentRouter from "./routes/comment.route.js";
-import connectDB from "./lib/connectDB.js";
 import webhookRouter from "./routes/webhook.route.js";
 import { clerkMiddleware, requireAuth } from "@clerk/express";
 import cors from "cors";
-import * as dotenv from "dotenv";
-dotenv.config();
-
-
-const PORT = process.env.PORT || 8000;
 
 const app = express();
 
@@ -27,35 +22,32 @@ app.use(function (req, res, next) {
   );
   next();
 });
-// !ENDPOINT FOR TEST PURPOSE
+
+// app.get("/test",(req,res)=>{
+//   res.status(200).send("it works!")
+// })
+
 // app.get("/auth-state", (req, res) => {
 //   const authState = req.auth;
-//   res.json({ authState });
+//   res.json(authState);
 // });
 
 // app.get("/protect", (req, res) => {
-//   const { userId } = req.auth;
-//   if (!userId) {
-//     // 401 => UNAUTHENTICATED
-//     return res.status(401).json("Not authenticated");
+//   const {userId} = req.auth;
+//   if(!userId){
+//     return res.status(401).json("not authenticated")
 //   }
-//   res.status(200).json("Authenticated");
+//   res.status(200).json("content")
 // });
 
 // app.get("/protect2", requireAuth(), (req, res) => {
-//   res.status(200).json("Authenticated");
+//   res.status(200).json("content")
 // });
 
-// ENDPOINTS
 app.use("/users", userRouter);
 app.use("/posts", postRouter);
 app.use("/comments", commentRouter);
 
-/*
- * BEFORE EXPRESS 5 WE HAD TO WRAP OUR PROMISES WITHING TRY_CATCH
- * AND WE HAVE ANY ERROR HANDLER IN index.js HAVE TO WRITE next, AND THROW THE ERROR
- * NOW WE CAN DEFINE ERROR HANDLER IN index.js IT WILL AUTOMATICALLY CATCH IT AND SHOW US OUR ERROR
- */
 app.use((error, req, res, next) => {
   res.status(error.status || 500);
 
@@ -66,11 +58,7 @@ app.use((error, req, res, next) => {
   });
 });
 
-app.listen(PORT, () => {
+app.listen(8000, () => {
   connectDB();
-  console.log(`Server is running on port ${PORT}`);
+  console.log("Server is running!");
 });
-
-// app.get("/test", (req, res) => {
-//   res.status(200).send("Hooray!");
-// });

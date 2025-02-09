@@ -1,13 +1,9 @@
 import express from "express";
-import { clerkWebHook } from "../controllers/webhook.controller.js";
-import bodyParser from "body-parser";
+import { getUserSavedPosts, savePost } from "../controllers/user.controller.js";
 
 const router = express.Router();
 
-router.post(
-  "/clerk",
-  bodyParser.raw({ type: "application/json" }), // Required for Clerk webhook verification
-  clerkWebHook
-);
+router.get("/saved", getUserSavedPosts);
+router.patch("/save", savePost);
 
 export default router;
