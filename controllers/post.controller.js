@@ -1,6 +1,8 @@
 import ImageKit from "imagekit";
 import Post from "../models/post.model.js";
 import User from "../models/user.model.js";
+import * as dotenv from "dotenv";
+dotenv.config();
 
 export const getPosts = async (req, res) => {
   const page = parseInt(req.query.page) || 1;

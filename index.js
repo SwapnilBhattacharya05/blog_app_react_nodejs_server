@@ -6,6 +6,9 @@ import connectDB from "./lib/connectDB.js";
 import webhookRouter from "./routes/webhook.route.js";
 import { clerkMiddleware, requireAuth } from "@clerk/express";
 import cors from "cors";
+import * as dotenv from "dotenv";
+dotenv.config();
+
 
 const PORT = process.env.PORT || 8000;
 
